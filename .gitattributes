@@ -4,6 +4,7 @@ flake.lock linguist-generated=true
 hosts/*/facter.json linguist-generated=true
 
 *.age binary
+*.png binary
 
 *.bat text eol=crlf
 *.cmd text eol=crlf

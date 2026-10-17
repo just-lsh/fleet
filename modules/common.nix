@@ -79,5 +79,22 @@
     nil
     nixfmt
     nix-your-shell
+    pnpm
+    python3
+    uv
+    gcc
+    gnumake
+    cmake
+    pkg-config
+    binutils
+    gdb
+    autoconf
+    automake
+    libtool
+    gnupatch
+    file
+    curl
+    wget
+    unzip
   ];
 }
