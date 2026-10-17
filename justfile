@@ -11,7 +11,16 @@ fmt:
     nix fmt -- $(git ls-files '*.nix')
 
 switch output="workstation":
-    sudo nixos-rebuild switch --flake {{ justfile_dir() }}#{{ output }}
+    nh os switch {{ justfile_dir() }} -H {{ output }}
 
 boot output="workstation":
-    sudo nixos-rebuild boot --flake {{ justfile_dir() }}#{{ output }}
+    nh os boot {{ justfile_dir() }} -H {{ output }}
+
+test output="workstation":
+    nh os test {{ justfile_dir() }} -H {{ output }}
+
+update output="workstation":
+    nh os switch {{ justfile_dir() }} -H {{ output }} --update
+
+clean:
+    nh clean all --keep 5 --keep-since 30d

@@ -11,15 +11,19 @@
       "flakes"
     ];
 
-    gc = {
-      automatic = true;
-      dates = "weekly";
-      options = "--delete-older-than 30d";
-    };
-
     optimise = {
       automatic = true;
       dates = "weekly";
+    };
+  };
+
+  programs.nh = {
+    enable = true;
+    flake = "/home/len/fleet";
+    clean = {
+      enable = true;
+      dates = "weekly";
+      extraArgs = "--keep 5 --keep-since 30d";
     };
   };
 
