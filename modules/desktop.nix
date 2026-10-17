@@ -40,6 +40,8 @@
     noto-fonts-color-emoji
   ];
 
+  programs.steam.enable = true;
+
   programs.appimage = {
     enable = true;
     binfmt = true;
@@ -79,5 +81,6 @@
     zed-editor
     gearlever
     proton-pass-cli
+    discord
   ];
 }
