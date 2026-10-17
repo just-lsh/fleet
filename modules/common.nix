@@ -1,4 +1,4 @@
-{ pkgs, ... }:
+{ lib, pkgs, ... }:
 {
   nix = {
     settings.experimental-features = [
@@ -43,6 +43,11 @@
     firewall.enable = true;
   };
 
+  services.tailscale = {
+    enable = true;
+    openFirewall = true;
+  };
+
   users.users.len = {
     isNormalUser = true;
     description = "len";
@@ -53,6 +58,8 @@
   };
 
   environment.localBinInPath = true;
+
+  environment.variables.EDITOR = lib.getExe pkgs.helix;
 
   users.defaultUserShell = pkgs.zsh;
   programs.zsh.enable = true;
