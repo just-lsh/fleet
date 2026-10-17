@@ -1,6 +1,7 @@
 * text=auto eol=lf
 
 flake.lock linguist-generated=true
+hosts/*/facter.json linguist-generated=true
 
 *.age binary
 

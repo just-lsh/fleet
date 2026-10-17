@@ -8,8 +8,8 @@ check:
 fmt:
     nix fmt -- $(git ls-files '*.nix' ':!:hosts/*/hardware.nix')
 
-switch output="len-desktop":
+switch output="workstation":
     sudo nixos-rebuild switch --flake {{ justfile_dir() }}#{{ output }}
 
-boot output="len-desktop":
+boot output="workstation":
     sudo nixos-rebuild boot --flake {{ justfile_dir() }}#{{ output }}

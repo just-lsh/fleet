@@ -1,11 +1,11 @@
 {
-  description = "Len's nixos config.";
+  description = "NixOs flake to manage my personal fleet.";
 
   inputs = {
     nixpkgs.url = "github:NixOS/nixpkgs/nixos-unstable";
 
-    hardware = {
-      url = "github:NixOS/nixos-hardware";
+    disko = {
+      url = "github:nix-community/disko";
       inputs.nixpkgs.follows = "nixpkgs";
     };
   };
@@ -13,9 +13,9 @@
   outputs =
     { nixpkgs, ... }@inputs:
     {
-      nixosConfigurations.len-desktop = nixpkgs.lib.nixosSystem {
+      nixosConfigurations.workstation = nixpkgs.lib.nixosSystem {
         specialArgs = { inherit inputs; };
-        modules = [ ./hosts/len-desktop/configuration.nix ];
+        modules = [ ./hosts/workstation/config.nix ];
       };
 
       formatter.x86_64-linux = nixpkgs.legacyPackages.x86_64-linux.nixfmt;

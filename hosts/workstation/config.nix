@@ -1,13 +1,21 @@
 { inputs, ... }:
 {
   imports = [
-    ./hardware.nix
+    inputs.disko.nixosModules.disko
+    ./disk.nix
     ../../modules/common.nix
     ../../modules/desktop.nix
-    inputs.hardware.nixosModules.common-pc-ssd
-    inputs.hardware.nixosModules.common-cpu-amd
-    inputs.hardware.nixosModules.common-gpu-nvidia
   ];
+
+  hardware.facter.reportPath = ./facter.json;
+
+  swapDevices = [ ];
+
+  boot.initrd.availableKernelModules = [ "usb_storage" ];
+
+  services.fstrim.enable = true;
+
+  services.xserver.videoDrivers = [ "nvidia" ];
 
   hardware.graphics.enable = true;
 
@@ -26,6 +34,7 @@
     efi.canTouchEfiVariables = true;
     limine = {
       enable = true;
+      maxGenerations = 4;
       extraEntries = ''
         /Windows
           protocol: efi
@@ -34,7 +43,7 @@
     };
   };
 
-  networking.hostName = "len-desktop";
+  networking.hostName = "workstation";
 
   system.stateVersion = "25.11";
 }
