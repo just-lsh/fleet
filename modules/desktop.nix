@@ -1,4 +1,9 @@
-{ lib, pkgs, ... }:
+{
+  config,
+  lib,
+  pkgs,
+  ...
+}:
 {
   services.desktopManager.plasma6.enable = true;
 
@@ -52,6 +57,19 @@
       TerminalApplication = lib.getExe pkgs.ghostty;
       TerminalService = "com.mitchellh.ghostty.desktop";
     };
+  };
+
+  # Lets the tray toggle the connection and switch exit nodes without root
+  services.tailscale.extraSetFlags = [ "--operator=len" ];
+
+  # Mirrors upstream's tailscale-systray.service, bound to the desktop session
+  systemd.user.services.tailscale-systray = {
+    description = "Tailscale System Tray";
+    documentation = [ "https://tailscale.com/kb/1597/linux-systray" ];
+    wantedBy = [ "graphical-session.target" ];
+    partOf = [ "graphical-session.target" ];
+    after = [ "graphical-session.target" ];
+    serviceConfig.ExecStart = "${lib.getExe config.services.tailscale.package} systray";
   };
 
   environment.systemPackages = with pkgs; [

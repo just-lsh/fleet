@@ -31,11 +31,14 @@
   };
 
   boot.loader = {
-    timeout = 30 * 60;
+    timeout = 2 * 60;
     efi.canTouchEfiVariables = true;
     limine = {
       enable = true;
       maxGenerations = 4;
+      extraConfig = ''
+        default_entry: Windows
+      '';
       extraEntries = ''
         /Windows
           protocol: efi
