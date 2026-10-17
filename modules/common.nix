@@ -79,6 +79,7 @@
     nil
     nixfmt
     nix-your-shell
+    nodejs
     pnpm
     python3
     uv

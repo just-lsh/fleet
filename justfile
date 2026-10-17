@@ -1,3 +1,5 @@
+mod home
+
 [private]
 default:
     @just --list
@@ -13,7 +15,3 @@ switch output="workstation":
 
 boot output="workstation":
     sudo nixos-rebuild boot --flake {{ justfile_dir() }}#{{ output }}
-
-dotfiles:
-    mkdir -p ~/.config
-    stow --restow home

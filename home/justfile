@@ -1,0 +1,16 @@
+[private]
+default:
+    @just --list
+
+setup:
+    mkdir -p ~/.config
+    stow --verbose --restow .
+
+cleanup:
+    stow --verbose --delete  .
+
+dry-run:
+    @stow --no --verbose --restow .
+
+skills *args="--help":
+    pnpx --yes skills@latest {{ args }}

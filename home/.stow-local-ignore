@@ -1,0 +1,10 @@
+# Replaces stow's built-in ignore list, so the relevant defaults are repeated here
+\.git
+\.gitignore
+.+~
+\#.*\#
+^/.agents/.skill-lock.json
+^/skills-lock.json
+^/justfile
+^/\.stowrc
+^/\.stow-local-ignore
