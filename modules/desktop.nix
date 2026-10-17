@@ -61,6 +61,21 @@
     };
   };
 
+  services.keyd = {
+    enable = true;
+    keyboards.default = {
+      ids = [ "*" ];
+      settings = {
+        meta = {
+          c = "C-insert";
+          v = "S-insert";
+          x = "C-x";
+        };
+        "control+meta".v = "M-v";
+      };
+    };
+  };
+
   # Lets the tray toggle the connection and switch exit nodes without root
   services.tailscale.extraSetFlags = [ "--operator=len" ];
 
