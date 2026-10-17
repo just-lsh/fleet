@@ -16,13 +16,22 @@
   };
 
   outputs =
-    { nixpkgs, ... }@inputs:
+    { self, nixpkgs, ... }@inputs:
+    let
+      inherit (self) outputs;
+      systems = [ "x86_64-linux" ];
+      forAllSystems = nixpkgs.lib.genAttrs systems;
+    in
     {
+      packages = forAllSystems (system: import ./pkgs nixpkgs.legacyPackages.${system});
+
+      overlays = import ./overlays { inherit inputs; };
+
       nixosConfigurations.workstation = nixpkgs.lib.nixosSystem {
-        specialArgs = { inherit inputs; };
+        specialArgs = { inherit inputs outputs; };
         modules = [ ./hosts/workstation/config.nix ];
       };
 
-      formatter.x86_64-linux = nixpkgs.legacyPackages.x86_64-linux.nixfmt;
+      formatter = forAllSystems (system: nixpkgs.legacyPackages.${system}.nixfmt);
     };
 }

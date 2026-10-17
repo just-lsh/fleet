@@ -82,5 +82,6 @@
     gearlever
     proton-pass-cli
     discord
+    raddebugger
   ];
 }
