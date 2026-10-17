@@ -26,6 +26,7 @@
   environment.systemPackages = with pkgs; [
     ghostty
     google-chrome
+    chatgpt
     zed-editor
     gearlever
     proton-pass-cli

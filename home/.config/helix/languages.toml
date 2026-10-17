@@ -1,0 +1,7 @@
+[[language]]
+auto-format = true
+name = "nix"
+
+[language.formatter]
+args = ["--filename=%{buffer_name}", "-"]
+command = "nixfmt"

@@ -67,6 +67,7 @@
     eza
     helix
     just
+    stow
     nixd
     nil
     nixfmt
