@@ -71,7 +71,18 @@
   environment.variables.EDITOR = lib.getExe pkgs.helix;
 
   users.defaultUserShell = pkgs.zsh;
-  programs.zsh.enable = true;
+
+  programs.zsh = {
+    enable = true;
+    autosuggestions.enable = true;
+    syntaxHighlighting.enable = true;
+  };
+
+  programs.zoxide = {
+    enable = true;
+    # Initialised in home/.zshrc as `cd`.
+    enableZshIntegration = false;
+  };
   programs.git.enable = true;
 
   environment.systemPackages = with pkgs; [
