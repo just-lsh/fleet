@@ -2,15 +2,22 @@
 default:
     @just --list
 
-setup:
-    mkdir -p ~/.config
-    stow --verbose --restow .
+switch:
+    hjem standalone switch --config ./hjem.nix
+
+build:
+    hjem standalone build --config ./hjem.nix
+
+rollback:
+    hjem standalone rollback
 
 cleanup:
-    stow --verbose --delete  .
-
-dry-run:
-    @stow --no --verbose --restow .
+    #!/usr/bin/env bash
+    set -euo pipefail
+    empty=$(mktemp --suffix=.json)
+    trap 'rm -f "$empty"' EXIT
+    echo '{"version": 3, "files": []}' > "$empty"
+    hjem standalone switch --manifest "$empty"
 
 skills *args="--help":
     pnpx --yes skills@latest {{ args }}

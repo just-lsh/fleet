@@ -1,0 +1,7 @@
+commit_attribution = ""
+
+[features]
+memories = false
+
+[skills.bundled]
+enabled = false

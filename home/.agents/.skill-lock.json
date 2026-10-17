@@ -4,5 +4,5 @@
   "dismissed": {
     "findSkillsPrompt": true
   },
-  "lastSelectedAgents": ["codex", "claude-code"]
+  "lastSelectedAgents": ["codex"]
 }

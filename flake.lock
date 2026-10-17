@@ -20,6 +20,26 @@
         "type": "github"
       }
     },
+    "hjem": {
+      "inputs": {
+        "nixpkgs": [
+          "nixpkgs"
+        ]
+      },
+      "locked": {
+        "lastModified": 1791807571,
+        "narHash": "sha256-Q5hGcKBaqz1L0neSRDfQgQPBKmSCkV1N5YBRwp+RtUc=",
+        "owner": "feel-co",
+        "repo": "hjem",
+        "rev": "6b2cc57463bbbac3d7c61206ab365a2c928861a4",
+        "type": "github"
+      },
+      "original": {
+        "owner": "feel-co",
+        "repo": "hjem",
+        "type": "github"
+      }
+    },
     "nixpkgs": {
       "locked": {
         "lastModified": 1791956154,
@@ -39,6 +59,7 @@
     "root": {
       "inputs": {
         "disko": "disko",
+        "hjem": "hjem",
         "nixpkgs": "nixpkgs"
       }
     }

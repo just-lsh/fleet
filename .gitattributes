@@ -1,9 +1,12 @@
 * text=auto eol=lf
 
 flake.lock linguist-generated=true
+
 hosts/*/facter.json linguist-generated=true
+
 home/skills-lock.json linguist-generated=true
 home/.agents/.skill-lock.json linguist-generated=true
+home/.agents/skills/** linguist-vendored
 
 *.age binary
 *.png binary

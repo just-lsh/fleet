@@ -1,4 +1,9 @@
-{ lib, pkgs, ... }:
+{
+  inputs,
+  lib,
+  pkgs,
+  ...
+}:
 {
   nix = {
     settings.experimental-features = [
@@ -74,7 +79,7 @@
     eza
     helix
     just
-    stow
+    inputs.hjem.packages.${pkgs.stdenv.hostPlatform.system}.hjem
     nixd
     nil
     nixfmt
