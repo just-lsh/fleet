@@ -27,3 +27,7 @@ result-*
 
 # OS
 .DS_Store
+
+# Licensed Flow Icons, if the download script is run by hand
+flow-icons-svg/
+node_modules/

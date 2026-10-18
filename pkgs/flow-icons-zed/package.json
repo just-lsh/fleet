@@ -1,0 +1,9 @@
+{
+  "name": "flow-icons-zed",
+  "version": "2.0.10",
+  "type": "module",
+  "private": true,
+  "dependencies": {
+    "tar": "^7.5.22"
+  }
+}

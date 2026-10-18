@@ -1,0 +1,8 @@
+id = "flow-icons"
+name = "Flow Icons"
+description = "Flow Icons for Zed, built from the licensed SVG set"
+version = "@version@"
+schema_version = 1
+authors = ["Thang Nguyen"]
+repository = "https://github.com/thang-nm/Flow-Icons"
+icon_themes = ["icon_themes/flow-icons.json"]
