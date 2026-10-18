@@ -6,6 +6,8 @@
   ...
 }:
 {
+  imports = [ ./sops.nix ];
+
   nix = {
     settings.experimental-features = [
       "nix-command"
@@ -105,6 +107,7 @@
     nixd
     nil
     nixfmt
+    sops
     nix-your-shell
     nodejs
     pnpm
