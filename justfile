@@ -1,4 +1,5 @@
 mod home
+mod secrets
 
 [private]
 default:

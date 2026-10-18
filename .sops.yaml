@@ -1,7 +1,6 @@
 keys:
   - &main age1kjw3mqhn3x56wr42htfk48xrprl36rju3ky4y5f98y4fwr0fcgvsx7v9g4
   - &workstation age1vek05hfezq356ktjz38edhxrn39nyz6739gquly0x0wxntkmg5csz29zz4
-
 creation_rules:
   - path_regex: secrets/[^/]+\.yaml$
     key_groups:
