@@ -98,5 +98,6 @@
     proton-pass-cli
     discord
     raddebugger
+    wl-clipboard
   ];
 }

@@ -1,4 +1,4 @@
-{ inputs, ... }:
+{ inputs, pkgs, ... }:
 {
   imports = [
     inputs.disko.nixosModules.disko
@@ -14,6 +14,17 @@
   boot.initrd.availableKernelModules = [ "usb_storage" ];
 
   services.fstrim.enable = true;
+
+  services.udev.packages = [
+    (pkgs.writeTextFile {
+      name = "nuphy-udev-rules";
+      destination = "/etc/udev/rules.d/60-nuphy.rules";
+      text = ''
+        KERNEL=="hidraw*", ATTRS{idVendor}=="19f5", TAG+="uaccess"
+        SUBSYSTEM=="usb", ENV{DEVTYPE}=="usb_device", ATTRS{idVendor}=="19f5", TAG+="uaccess"
+      '';
+    })
+  ];
 
   services.xserver.videoDrivers = [ "nvidia" ];
 
