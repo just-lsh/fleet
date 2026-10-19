@@ -45,6 +45,11 @@
         modules = [ ./hosts/workstation/config.nix ];
       };
 
+      nixosConfigurations.laptop = nixpkgs.lib.nixosSystem {
+        specialArgs = { inherit inputs outputs; };
+        modules = [ ./hosts/laptop/config.nix ];
+      };
+
       formatter = forAllSystems (system: nixpkgs.legacyPackages.${system}.nixfmt);
     };
 }

@@ -11,17 +11,39 @@ check:
 fmt:
     nix fmt -- $(git ls-files '*.nix')
 
-switch output="workstation":
+switch output=`uname -n`:
     nh os switch {{ justfile_dir() }} -H {{ output }}
 
-boot output="workstation":
+boot output=`uname -n`:
     nh os boot {{ justfile_dir() }} -H {{ output }}
 
-test output="workstation":
+test output=`uname -n`:
     nh os test {{ justfile_dir() }} -H {{ output }}
 
-update output="workstation":
+update output=`uname -n`:
     nh os switch {{ justfile_dir() }} -H {{ output }} --update
+
+# Install a host over SSH with nixos-anywhere. Wipes the target's disk.
+install host target:
+    #!/usr/bin/env bash
+    set -euo pipefail
+    extra=$(mktemp -d)
+    trap 'rm -rf "$extra"' EXIT
+    keyfile="$extra/var/lib/sops-nix/key.txt"
+    install -d -m 700 "$(dirname "$keyfile")"
+    age=$(nix build --no-link --print-out-paths nixpkgs#age)
+    "$age/bin/age-keygen" -o "$keyfile" 2>/dev/null
+    key=$("$age/bin/age-keygen" -y "$keyfile")
+    if grep -qE '&{{ host }} ' .sops.yaml; then
+        just secrets replace {{ host }} "$key"
+    else
+        just secrets add {{ host }} "$key"
+    fi
+    nix run nixpkgs#nixos-anywhere -- \
+        --flake .#{{ host }} \
+        --generate-hardware-config nixos-facter hosts/{{ host }}/facter.json \
+        --extra-files "$extra" \
+        {{ target }}
 
 clean:
     nh clean all --keep 5 --keep-since 30d
