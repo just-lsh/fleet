@@ -32,8 +32,22 @@
 
   sops.secrets.flow-icons-license.owner = "len";
 
+  # The extension without its icons, which the service below fills in. Zed
+  # treats a linked extension as a dev extension and never replaces it with a
+  # registry update.
+  hjem.users.len.xdg.data.files =
+    let
+      extension = "flow-icons/extension";
+    in
+    {
+      ${extension}.type = "directory";
+      "${extension}/extension.toml".source = "${pkgs.flow-icons-zed}/share/flow-icons-zed/extension.toml";
+      "zed/extensions/installed/flow-icons".source =
+        "${config.hjem.users.len.xdg.data.directory}/${extension}";
+    };
+
   systemd.user.services.flow-icons = {
-    description = "Install Flow Icons for Zed";
+    description = "Install the latest Flow Icons for Zed";
     wantedBy = [ "default.target" ];
     unitConfig.ConditionUser = "len";
     startLimitIntervalSec = 60 * 60;
