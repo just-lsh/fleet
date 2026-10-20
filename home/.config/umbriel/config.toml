@@ -1,0 +1,191 @@
+# Starts from Umbriel's packaged config (examples/config.toml), which is
+# ignored once this file exists, plus the settings Noctalia's docs recommend.
+# Reference: https://docs.noctalia.dev/umbriel/
+
+[general]
+# X11 apps see physical pixels and stay sharp on scaled outputs. Those that
+# read XSETTINGS, like Steam and Electron, scale their own interface.
+xwayland_native_resolution = true
+
+# ==============================================================================
+# Outputs
+
+# Laptop panel: 2880x1920 at 13.5", the scale Plasma used.
+[output.eDP-1]
+scale = 1.7
+
+# ==============================================================================
+# Appearance
+
+[appearance]
+prefer_no_csd = true
+border_width = 2
+corner_radius = 10
+
+[appearance.blur]
+enabled = true
+optimized = true
+passes = 3
+radius = 3
+noise = 0.02
+brightness = 0.9
+contrast = 0.9
+saturation = 1.1
+
+# ==============================================================================
+# Input
+
+[input.keyboard]
+numlock_toggle = true
+
+[input.cursor]
+theme = "Adwaita"
+size = 24
+
+# ==============================================================================
+# Keybinds
+# Replaces the built-in binds, so every bind in use is listed here.
+# Super+C, Super+V and Super+X belong to keyd's copy and paste.
+
+[keybinds]
+
+# Applications and session
+"Mod+Return" = { action = "spawn:ghostty", repeat = false }
+"Mod" = "spawn:noctalia msg panel-toggle launcher"
+"Mod+S" = "spawn:noctalia msg panel-toggle control-center"
+"Alt+Tab" = "spawn:noctalia msg window-switcher hold"
+"Mod+Alt+L" = { action = "spawn:noctalia msg session lock", repeat = false }
+"Print" = { action = "spawn:noctalia msg screenshot-region", repeat = false }
+"Mod+Q" = { action = "window-close", repeat = false }
+"Mod+Escape" = "session-quit"
+"Mod+Shift+Escape" = { action = "shortcuts-inhibit-toggle", allow_when_inhibited = true, repeat = false }
+
+# Media, volume and brightness, routed through the shell so its OSDs show.
+"XF86AudioRaiseVolume" = { action = "spawn:noctalia msg volume-up", allow_when_locked = true }
+"XF86AudioLowerVolume" = { action = "spawn:noctalia msg volume-down", allow_when_locked = true }
+"XF86AudioMute" = { action = "spawn:noctalia msg volume-mute", allow_when_locked = true, repeat = false }
+"XF86AudioPlay" = { action = "spawn:noctalia msg media toggle", allow_when_locked = true, repeat = false }
+"XF86AudioNext" = { action = "spawn:noctalia msg media next", allow_when_locked = true }
+"XF86AudioPrev" = { action = "spawn:noctalia msg media previous", allow_when_locked = true }
+"XF86MonBrightnessUp" = { action = "spawn:noctalia msg brightness-up", allow_when_locked = true }
+"XF86MonBrightnessDown" = { action = "spawn:noctalia msg brightness-down", allow_when_locked = true }
+
+# Focus and movement
+"Mod+Left" = "window-focus-left"
+"Mod+Down" = "window-focus-down"
+"Mod+Up" = "window-focus-up"
+"Mod+Right" = "window-focus-right"
+"Mod+H" = "window-focus-left"
+"Mod+J" = "window-focus-down"
+"Mod+K" = "window-focus-up"
+"Mod+L" = "window-focus-right"
+"Mod+F1" = "window-focus-next"
+"Mod+Shift+Left" = "column-move-left"
+"Mod+Shift+Down" = "window-move-down"
+"Mod+Shift+Up" = "window-move-up"
+"Mod+Shift+Right" = "column-move-right"
+
+# Window state and layout
+"Mod+T" = { action = "window-toggle-floating", repeat = false }
+"Mod+Shift+T" = { action = "window-focus-switch-floating", repeat = false }
+"Mod+P" = { action = "window-toggle-pinned", repeat = false }
+"Mod+M" = { action = "window-toggle-maximize-to-edges", repeat = false }
+"Mod+F" = { action = "window-toggle-fullscreen", repeat = false }
+"Mod+Ctrl+F" = { action = "window-toggle-maximize", repeat = false }
+"Mod+R" = "window-cycle-primary-extent"
+"Mod+Shift+R" = "window-cycle-primary-extent-back"
+"Mod+Comma" = "window-consume-left"
+"Mod+Period" = "window-consume-right"
+"Mod+Ctrl+Comma" = "window-consume-from-left"
+"Mod+Ctrl+Period" = "window-consume-from-right"
+"Mod+W" = { action = "column-toggle-tabbed", repeat = false }
+"Mod+Alt+Right" = "column-focus-tab-next"
+"Mod+Alt+Left" = "column-focus-tab-previous"
+"Mod+WheelUp" = "window-focus-left"
+"Mod+WheelDown" = "window-focus-right"
+"Mod+O" = { action = "overview-toggle", repeat = false }
+
+# Workspaces
+"Mod+1" = "workspace-switch:1"
+"Mod+2" = "workspace-switch:2"
+"Mod+3" = "workspace-switch:3"
+"Mod+4" = "workspace-switch:4"
+"Mod+5" = "workspace-switch:5"
+"Mod+6" = "workspace-switch:6"
+"Mod+7" = "workspace-switch:7"
+"Mod+8" = "workspace-switch:8"
+"Mod+9" = "workspace-switch:9"
+"Mod+Shift+1" = "window-move-to-workspace:1"
+"Mod+Shift+2" = "window-move-to-workspace:2"
+"Mod+Shift+3" = "window-move-to-workspace:3"
+"Mod+Shift+4" = "window-move-to-workspace:4"
+"Mod+Shift+5" = "window-move-to-workspace:5"
+"Mod+Shift+6" = "window-move-to-workspace:6"
+"Mod+Shift+7" = "window-move-to-workspace:7"
+"Mod+Shift+8" = "window-move-to-workspace:8"
+"Mod+Shift+9" = "window-move-to-workspace:9"
+
+# Scratchpad
+"Mod+Shift+Space" = { action = "window-move-to-scratchpad", repeat = false }
+"Mod+Space" = "scratchpad-toggle"
+"Mod+Ctrl+Space" = { action = "window-restore-from-scratchpad", repeat = false }
+"Mod+Tab" = "scratchpad-focus-next"
+
+# ==============================================================================
+# Layout
+
+[layout]
+extent_presets = [0.333, 0.5, 0.667]
+
+[layout.scrolling]
+default_extent_fraction = 0.5
+
+# ==============================================================================
+# Window rules
+
+[[window_rule]]
+blur = true
+
+[[window_rule]]
+match.app_id = "^dev.noctalia.Noctalia$"
+default_floating = true
+default_floating_size_px = { width = 1020, height = 900 }
+
+[[window_rule]]
+match.app_id = "^dev.noctalia.UmbrielSharePicker$"
+default_floating = true
+default_floating_size_px = { width = 800, height = 600 }
+
+[[window_rule]]
+match.title = "^(Picture-in-Picture|Picture in picture)$"
+default_floating = true
+default_maximize = false
+default_position = { x = 20, y = 20, anchor = "bottom_right" }
+
+[[window_rule]]
+match.title = "^notificationtoasts_.+_desktop"
+default_position = { x = 0, y = 0, anchor = "bottom_right" }
+default_focused = false
+default_pinned = true
+
+# ==============================================================================
+# Layer rules
+
+[[layer_rule]]
+match.namespace = "^noctalia-(bar-[^\"]+|notification|dock|panel|attached-panel|osd|desktop-widget-[^\"]*)$"
+blur = true
+blur_ignore_alpha = 0.5
+blur_popups = true
+
+# These open over windows, so they blur the live content behind them.
+[[layer_rule]]
+match.namespace = "^noctalia-(notification|dock|panel|attached-panel|osd)$"
+blur_optimized = false
+
+# ==============================================================================
+# Overview
+
+[hot_corners.top_left]
+enabled = true
+delay_ms = 500
+action = "overview-open"

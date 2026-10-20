@@ -6,7 +6,10 @@
   ...
 }:
 {
-  imports = [ ./sops.nix ];
+  imports = [
+    ./sops.nix
+    inputs.hjem.nixosModules.default
+  ];
 
   nix = {
     settings.experimental-features = [
@@ -75,6 +78,8 @@
     ];
   };
 
+  hjem.users.len.imports = [ ../home/config.nix ];
+
   environment.localBinInPath = true;
 
   environment.variables.EDITOR = lib.getExe pkgs.helix;
@@ -103,7 +108,6 @@
     eza
     helix
     just
-    inputs.hjem.packages.${pkgs.stdenv.hostPlatform.system}.hjem
     nixd
     nil
     nixfmt

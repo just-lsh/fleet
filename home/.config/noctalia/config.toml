@@ -1,0 +1,24 @@
+# Overrides on top of Noctalia's defaults; see `noctalia config export full`.
+# Settings changed in the GUI land in ~/.local/state/noctalia/settings.toml
+# and win over this file.
+
+[shell]
+# Plasma's polkit agent is gone, so the shell answers auth prompts.
+polkit_agent = true
+# Apps get their own units and survive a shell restart.
+launch_apps_as_systemd_services = true
+umbriel_overview_type_to_launch_enabled = true
+
+[shell.greeter_sync]
+# Mirrors the shell's look on the login screen; see modules/noctalia.nix.
+auto_sync = true
+
+[idle.behavior.lock]
+timeout = 600
+action = "lock"
+enabled = true
+
+[idle.behavior.screen-off]
+timeout = 660
+action = "screen_off"
+enabled = true

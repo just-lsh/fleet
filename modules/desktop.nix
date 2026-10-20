@@ -5,28 +5,7 @@
   ...
 }:
 {
-  imports = [ ./flow-icons.nix ];
-
-  services.desktopManager.plasma6.enable = true;
-
-  services.displayManager.plasma-login-manager.enable = true;
-
-  environment.plasma6.excludePackages = with pkgs.kdePackages; [
-    konsole
-    kate
-    ktexteditor
-    elisa
-    khelpcenter
-    krdp
-    kwin-x11
-    plasma-keyboard
-    qtvirtualkeyboard
-    plasma-browser-integration
-    qrca
-    union
-  ];
-
-  programs.kde-pim.enable = false;
+  imports = [ ./noctalia.nix ];
 
   services.pulseaudio.enable = false;
   security.rtkit.enable = true;
@@ -51,16 +30,25 @@
 
   environment.variables.VISUAL = "${lib.getExe pkgs.zed-editor} --wait";
 
+  sops.secrets.flow-icons-license.owner = "len";
+
+  systemd.user.services.flow-icons = {
+    description = "Install Flow Icons for Zed";
+    wantedBy = [ "default.target" ];
+    unitConfig.ConditionUser = "len";
+    startLimitIntervalSec = 60 * 60;
+    startLimitBurst = 5;
+    serviceConfig = {
+      Type = "oneshot";
+      ExecStart = "${lib.getExe pkgs.flow-icons-zed} ${config.sops.secrets.flow-icons-license.path}";
+      Restart = "on-failure";
+      RestartSec = "1min";
+    };
+  };
+
   xdg.terminal-exec = {
     enable = true;
     settings.default = [ "com.mitchellh.ghostty.desktop" ];
-  };
-
-  environment.etc."xdg/kdeglobals".text = lib.generators.toINI { } {
-    General = {
-      TerminalApplication = lib.getExe pkgs.ghostty;
-      TerminalService = "com.mitchellh.ghostty.desktop";
-    };
   };
 
   services.keyd = {
