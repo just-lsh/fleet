@@ -56,7 +56,24 @@
       }
     ];
 
+    krunner = {
+      position = "center";
+      activateWhenTypingOnDesktop = false;
+      historyBehavior = "enableSuggestions";
+    };
+
+    shortcuts."org.kde.krunner.desktop"._launch = "Meta+Space";
+
     configFile = {
+      krunnerrc.Plugins = {
+        baloosearchEnabled = false;
+        krunner_appstreamEnabled = false;
+        krunner_dictionaryEnabled = false;
+        krunner_spellcheckEnabled = false;
+        krunner_katesessionsEnabled = false;
+        krunner_konsoleprofilesEnabled = false;
+      };
+
       kdeglobals = {
         General = {
           BrowserApplication = "google-chrome.desktop";
