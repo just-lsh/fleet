@@ -1,4 +1,7 @@
 { inputs, ... }:
+let
+  wallpaper = ../../assets/wallpaper/dark/2880x1920.png;
+in
 {
   imports = [
     inputs.disko.nixosModules.disko
@@ -13,6 +16,16 @@
 
   services.fprintd.enable = true;
   security.pam.services.login.fprintAuth = false;
+
+  home-manager.users.len.programs.plasma = {
+    workspace.wallpaper = wallpaper;
+    kscreenlocker.appearance.wallpaper = wallpaper;
+  };
+
+  environment.etc."plasmalogin.conf.d/50-wallpaper.conf".text = ''
+    [Greeter][Wallpaper][org.kde.image][General]
+    Image=file://${wallpaper}
+  '';
 
   boot.loader = {
     efi.canTouchEfiVariables = true;
