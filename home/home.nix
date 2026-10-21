@@ -22,6 +22,7 @@ in
   imports = [
     inputs.plasma-manager.homeModules.plasma-manager
     ./plasma.nix
+    ./apps.nix
   ];
 
   home.stateVersion = "26.11";
