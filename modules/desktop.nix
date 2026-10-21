@@ -26,6 +26,15 @@
 
   programs.kde-pim.enable = false;
 
+  # The login screen runs as its own user, so it only sees system-wide defaults
+  # and packages. Matches the cursor set for len in home/plasma.nix.
+  environment.etc."xdg/kcminputrc".text = lib.generators.toINI { } {
+    Mouse = {
+      cursorTheme = "Bibata-Modern-Classic";
+      cursorSize = 24;
+    };
+  };
+
   services.pulseaudio.enable = false;
   security.rtkit.enable = true;
   services.pipewire = {
@@ -99,6 +108,7 @@
   };
 
   environment.systemPackages = with pkgs; [
+    bibata-cursors
     google-chrome
     chatgpt
     gearlever

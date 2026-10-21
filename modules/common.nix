@@ -82,10 +82,9 @@
     useGlobalPkgs = true;
     useUserPackages = true;
     extraSpecialArgs = { inherit inputs; };
-    # Files placed earlier by hjem would otherwise block activation.
-    backupFileExtension = "hm-backup";
+    backupFileExtension = "backup";
     overwriteBackup = true;
-    users.len = ../home/home.nix;
+    users.len = ../home/config.nix;
   };
 
   environment.localBinInPath = true;
@@ -94,10 +93,8 @@
 
   users.defaultUserShell = pkgs.zsh;
 
-  # The login shell; configured for len in home/home.nix.
   programs.zsh.enable = true;
 
-  # Completions for system packages, for Home Manager's zsh.
   environment.pathsToLink = [ "/share/zsh" ];
 
   programs.git.enable = true;

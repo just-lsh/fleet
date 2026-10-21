@@ -2,7 +2,6 @@
 {
   home.packages = with pkgs; [
     papirus-icon-theme
-    bibata-cursors
   ];
 
   programs.plasma = {
