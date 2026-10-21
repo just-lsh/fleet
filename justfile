@@ -39,6 +39,9 @@ install host target:
     else
         just secrets add {{ host }} "$key"
     fi
+    if [[ ! -f hosts/{{ host }}/id_ed25519.pub ]]; then
+        just secrets ssh {{ host }}
+    fi
     nix run nixpkgs#nixos-anywhere -- \
         --flake .#{{ host }} \
         --generate-hardware-config nixos-facter hosts/{{ host }}/facter.json \

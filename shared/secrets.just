@@ -65,3 +65,47 @@ replace name key:
       (.keys[] | select(anchor == strenv(NAME))) |= (. = strenv(KEY))
     ' .sops.yaml
     just secrets update
+
+# Give a host its SSH server key and a client key for len, generated or imported from user_key.
+ssh name user_key="":
+    #!/usr/bin/env bash
+    set -euo pipefail
+    dir=hosts/{{ name }}
+    if [[ ! -d "$dir" ]]; then
+        echo "error: $dir does not exist" >&2
+        exit 1
+    fi
+    if ! grep -qE '&{{ name }} ' .sops.yaml; then
+        echo "error: {{ name }} is not in .sops.yaml, run 'just secrets add' first" >&2
+        exit 1
+    fi
+    if [[ -f "$dir/id_ed25519.pub" || -f "$dir/ssh_host_ed25519_key.pub" ]]; then
+        echo "error: {{ name }} already has SSH keys" >&2
+        exit 1
+    fi
+    tmp=$(mktemp -d)
+    trap 'rm -rf "$tmp"' EXIT
+    ssh-keygen -q -t ed25519 -N "" -C "root@{{ name }}" -f "$tmp/host"
+    if [[ -n "{{ user_key }}" ]]; then
+        cp "{{ user_key }}" "$tmp/user"
+        if [[ -f "{{ user_key }}.pub" ]]; then
+            cp "{{ user_key }}.pub" "$tmp/user.pub"
+        else
+            ssh-keygen -y -f "$tmp/user" > "$tmp/user.pub"
+        fi
+    else
+        ssh-keygen -q -t ed25519 -N "" -C "len@{{ name }}" -f "$tmp/user"
+    fi
+    yq() { nix run nixpkgs#yq-go -- "$@"; }
+    if [[ -f "$dir/secrets.yaml" ]]; then
+        for key in host user; do
+            sops set "$dir/secrets.yaml" "[\"ssh\"][\"$key\"]" "$(TMP="$tmp/$key" yq -n -o json 'load_str(strenv(TMP))')"
+        done
+    else
+        TMP="$tmp" yq -n '.ssh.host = load_str(strenv(TMP) + "/host") | .ssh.user = load_str(strenv(TMP) + "/user")' > "$tmp/secrets.yaml"
+        sops encrypt --filename-override "$dir/secrets.yaml" "$tmp/secrets.yaml" > "$tmp/secrets.enc.yaml"
+        mv "$tmp/secrets.enc.yaml" "$dir/secrets.yaml"
+    fi
+    cp "$tmp/host.pub" "$dir/ssh_host_ed25519_key.pub"
+    cp "$tmp/user.pub" "$dir/id_ed25519.pub"
+    git add "$dir/secrets.yaml" "$dir/ssh_host_ed25519_key.pub" "$dir/id_ed25519.pub"

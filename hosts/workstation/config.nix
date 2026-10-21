@@ -1,4 +1,7 @@
 { inputs, pkgs, ... }:
+let
+  wallpaper = ../../assets/wallpaper/dark/3440x1440.png;
+in
 {
   imports = [
     inputs.disko.nixosModules.disko
@@ -25,6 +28,16 @@
       '';
     })
   ];
+
+  home-manager.users.len.programs.plasma = {
+    workspace.wallpaper = wallpaper;
+    kscreenlocker.appearance.wallpaper = wallpaper;
+  };
+
+  environment.etc."plasmalogin.conf.d/50-wallpaper.conf".text = ''
+    [Greeter][Wallpaper][org.kde.image][General]
+    Image=file://${wallpaper}
+  '';
 
   services.xserver.videoDrivers = [ "nvidia" ];
 

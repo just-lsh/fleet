@@ -11,6 +11,9 @@
 
   services.fstrim.enable = true;
 
+  services.fprintd.enable = true;
+  security.pam.services.login.fprintAuth = false;
+
   boot.loader = {
     efi.canTouchEfiVariables = true;
     limine = {

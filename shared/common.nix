@@ -8,6 +8,7 @@
 {
   imports = [
     ./sops.nix
+    ./ssh.nix
     inputs.home-manager.nixosModules.home-manager
   ];
 
