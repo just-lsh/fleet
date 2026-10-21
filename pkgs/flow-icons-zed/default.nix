@@ -41,7 +41,7 @@ buildNpmPackage {
     install -Dm644 -t $lib flow-icons-download.mjs zed-theme.mjs
     cp -r node_modules $lib/
 
-    # Linked into the extension by hjem; see modules/desktop.nix.
+    # Linked into the extension by Home Manager; see home/home.nix.
     mkdir -p $out/share/flow-icons-zed
     substitute extension.toml $out/share/flow-icons-zed/extension.toml --subst-var version
 

@@ -1,5 +1,5 @@
 #!/usr/bin/env bash
-# Installs the latest Flow Icons into the Zed extension that hjem sets up.
+# Installs the latest Flow Icons into the Zed extension that Home Manager sets up.
 #
 # Takes the icon mappings from the latest release of the public VS Code
 # extension, downloads that release's licensed SVGs the same way VS Code does,
@@ -33,7 +33,7 @@ fi
 
 rm -rf "$state/theme"
 node @lib@/zed-theme.mjs "$state/vscode" "$state/theme"
-# hjem creates the extension and links its extension.toml; only fill in the rest.
+# Home Manager creates the extension and links its extension.toml; only fill in the rest.
 mkdir -p "$extension"
 for dir in icons icon_themes; do
   rm -rf "${extension:?}/$dir"
