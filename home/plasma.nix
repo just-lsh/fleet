@@ -6,6 +6,8 @@
     # Anything not set here goes back to Plasma's default on the next login.
     overrideConfig = true;
 
+    workspace.lookAndFeel = "org.kde.breezedark.desktop";
+
     kwin.virtualDesktops = {
       number = 1;
       rows = 1;
