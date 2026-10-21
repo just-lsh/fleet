@@ -1,6 +1,6 @@
 id = "flow-icons"
 name = "Flow Icons"
-description = "Flow Icons for Zed, built from the licensed SVG set"
+description = "Flow Icons for Zed, built from the licensed SVG set of the latest release"
 version = "@version@"
 schema_version = 1
 authors = ["Thang Nguyen"]

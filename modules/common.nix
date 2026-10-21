@@ -6,7 +6,10 @@
   ...
 }:
 {
-  imports = [ ./sops.nix ];
+  imports = [
+    ./sops.nix
+    inputs.home-manager.nixosModules.home-manager
+  ];
 
   nix = {
     settings.experimental-features = [
@@ -75,40 +78,36 @@
     ];
   };
 
+  home-manager = {
+    useGlobalPkgs = true;
+    useUserPackages = true;
+    extraSpecialArgs = { inherit inputs; };
+    backupFileExtension = "backup";
+    overwriteBackup = true;
+    users.len = ../home/config.nix;
+  };
+
   environment.localBinInPath = true;
 
   environment.variables.EDITOR = lib.getExe pkgs.helix;
 
   users.defaultUserShell = pkgs.zsh;
 
-  programs.zsh = {
-    enable = true;
-    autosuggestions.enable = true;
-    syntaxHighlighting.enable = true;
-  };
+  programs.zsh.enable = true;
 
-  programs.zoxide = {
-    enable = true;
-    # Initialised in home/.zshrc as `cd`.
-    enableZshIntegration = false;
-  };
+  environment.pathsToLink = [ "/share/zsh" ];
+
   programs.git.enable = true;
 
   environment.systemPackages = with pkgs; [
     git
-    gh
     jujutsu
     zsh
-    starship
-    eza
-    helix
     just
-    inputs.hjem.packages.${pkgs.stdenv.hostPlatform.system}.hjem
     nixd
     nil
     nixfmt
     sops
-    nix-your-shell
     nodejs
     pnpm
     python3

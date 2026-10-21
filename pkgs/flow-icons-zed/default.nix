@@ -1,17 +1,18 @@
 {
   lib,
   buildNpmPackage,
-  fetchurl,
   bash,
-  unzip,
   makeWrapper,
   nodejs,
   coreutils,
+  curl,
+  jq,
+  unzip,
 }:
-buildNpmPackage (finalAttrs: {
+buildNpmPackage {
   pname = "flow-icons-zed";
-  # Keep in sync with the `v=` query in flow-icons-download.mjs.
-  version = "2.0.10";
+  # The tooling's own version; the icons always come from the latest release.
+  inherit (lib.importJSON ./package.json) version;
 
   src = lib.fileset.toSource {
     root = ./.;
@@ -25,19 +26,10 @@ buildNpmPackage (finalAttrs: {
     ];
   };
 
-  npmDepsHash = "sha256-aIXTpS3f359NiaQPJ+FWik+EroxPLcgJfBlbCfMB7iA=";
+  npmDepsHash = "sha256-Xvw3DjHRNBj//yggP/3YESqTgBISa+AhsiBR7q8bFc4=";
   dontNpmBuild = true;
 
-  # Public demo build: icon mappings and placeholder SVGs, no licensed icons.
-  vsix = fetchurl {
-    url = "https://open-vsx.org/api/thang-nm/flow-icons/${finalAttrs.version}/file/thang-nm.flow-icons-${finalAttrs.version}.vsix";
-    hash = "sha256-vT9c2T4hI4MYKeoRL5jK4tuxGnwmfDBdMI0nbzsmQHY=";
-  };
-
-  nativeBuildInputs = [
-    unzip
-    makeWrapper
-  ];
+  nativeBuildInputs = [ makeWrapper ];
 
   # Lets patchShebangs point the wrapper script at a store bash.
   buildInputs = [ bash ];
@@ -48,22 +40,22 @@ buildNpmPackage (finalAttrs: {
     lib=$out/lib/flow-icons-zed
     install -Dm644 -t $lib flow-icons-download.mjs zed-theme.mjs
     cp -r node_modules $lib/
-    substitute extension.toml $lib/extension.toml --subst-var version
 
-    unzip -q $vsix 'extension/*' -d vsix
-    mkdir -p $out/share $out/bin
-    cp -r vsix/extension $out/share/flow-icons-zed-vscode
+    # Linked into the extension by Home Manager; see home/zed.nix.
+    mkdir -p $out/share/flow-icons-zed
+    substitute extension.toml $out/share/flow-icons-zed/extension.toml --subst-var version
 
-    substitute flow-icons-zed.sh $out/bin/flow-icons-zed \
-      --subst-var version \
-      --subst-var lib \
-      --replace-fail @vscode@ $out/share/flow-icons-zed-vscode
+    mkdir -p $out/bin
+    substitute flow-icons-zed.sh $out/bin/flow-icons-zed --subst-var lib
     chmod +x $out/bin/flow-icons-zed
     wrapProgram $out/bin/flow-icons-zed \
       --prefix PATH : ${
         lib.makeBinPath [
           nodejs
           coreutils
+          curl
+          jq
+          unzip
         ]
       }
 
@@ -71,10 +63,10 @@ buildNpmPackage (finalAttrs: {
   '';
 
   meta = {
-    description = "Installs the licensed Flow Icons as a Zed dev extension";
+    description = "Installs the latest licensed Flow Icons into a Zed extension";
     homepage = "https://flow-icons.pages.dev";
     license = lib.licenses.unfree;
     platforms = lib.platforms.linux;
     mainProgram = "flow-icons-zed";
   };
-})
+}

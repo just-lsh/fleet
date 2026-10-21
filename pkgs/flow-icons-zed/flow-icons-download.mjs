@@ -6,8 +6,9 @@
 // (.tar.br), then streams it through brotli decompression into tar extraction.
 //
 // License key comes from (in order): --key, $FLOW_ICONS_LICENSE, or a prompt.
+// The release is the Flow Icons version whose SVGs to fetch, as VS Code sends it.
 //
-//   FLOW_ICONS_LICENSE=XXXX node flow-icons-download.mjs [-o ./flow-icons-svg]
+//   FLOW_ICONS_LICENSE=XXXX node flow-icons-download.mjs -r 2.0.10 [-o ./flow-icons-svg]
 
 import { mkdir } from "node:fs/promises";
 import path from "node:path";
@@ -18,7 +19,7 @@ import { parseArgs } from "node:util";
 import { createBrotliDecompress } from "node:zlib";
 import * as tar from "tar";
 
-const API_URL = "https://legit-i9lq.onrender.com/flow-icons/version-3?v=2.0.10";
+const API_URL = "https://legit-i9lq.onrender.com/flow-icons/version-3";
 
 function fail(msg) {
   console.error(`error: ${msg}`);
@@ -40,11 +41,11 @@ function promptHidden(question) {
   });
 }
 
-async function fetchSvgUrl(key) {
+async function fetchSvgUrl(key, release) {
   let res;
   try {
     // The API is hosted on Render and can take a while to wake up.
-    res = await fetch(API_URL, {
+    res = await fetch(`${API_URL}?${new URLSearchParams({ v: release })}`, {
       headers: { authorization: key, "machine-id": "no-id" },
       signal: AbortSignal.timeout(120_000),
     });
@@ -81,21 +82,24 @@ async function main() {
   const { values } = parseArgs({
     options: {
       key: { type: "string", short: "k" },
+      release: { type: "string", short: "r" },
       out: { type: "string", short: "o", default: "flow-icons-svg" },
       help: { type: "boolean", short: "h" },
     },
   });
   if (values.help) {
-    console.log("usage: node flow-icons-download.mjs [-k KEY] [-o OUT_DIR]\n" +
+    console.log("usage: node flow-icons-download.mjs -r RELEASE [-k KEY] [-o OUT_DIR]\n" +
       "Prefer $FLOW_ICONS_LICENSE over -k to keep the key out of shell history.");
     return;
   }
+
+  if (!values.release) fail("no release given; pass -r with a Flow Icons version");
 
   const key = (values.key ?? process.env.FLOW_ICONS_LICENSE ?? (await promptHidden("License key: "))).trim();
   if (!key) fail("no license key given");
 
   console.log("requesting download link...");
-  const url = await fetchSvgUrl(key);
+  const url = await fetchSvgUrl(key, values.release);
 
   const res = await fetch(url, { signal: AbortSignal.timeout(300_000) });
   if (!res.ok) fail(`download failed (HTTP ${res.status})`);
