@@ -5,7 +5,26 @@
   ...
 }:
 {
-  imports = [ ./noctalia.nix ];
+  services.desktopManager.plasma6.enable = true;
+
+  services.displayManager.plasma-login-manager.enable = true;
+
+  environment.plasma6.excludePackages = with pkgs.kdePackages; [
+    konsole
+    kate
+    ktexteditor
+    elisa
+    khelpcenter
+    krdp
+    kwin-x11
+    plasma-keyboard
+    qtvirtualkeyboard
+    plasma-browser-integration
+    qrca
+    union
+  ];
+
+  programs.kde-pim.enable = false;
 
   services.pulseaudio.enable = false;
   security.rtkit.enable = true;
@@ -17,8 +36,6 @@
   };
 
   fonts.packages = with pkgs; [
-    # The shell font; installed system-wide so the greeter can use it too.
-    inter
     nerd-fonts.jetbrains-mono
     noto-fonts-color-emoji
   ];
@@ -33,20 +50,6 @@
   environment.variables.VISUAL = "${lib.getExe pkgs.zed-editor} --wait";
 
   sops.secrets.flow-icons-license.owner = "len";
-
-  # The extension without its icons, which the service below fills in. Zed
-  # treats a linked extension as a dev extension and never replaces it with a
-  # registry update.
-  hjem.users.len.xdg.data.files =
-    let
-      extension = "flow-icons/extension";
-    in
-    {
-      ${extension}.type = "directory";
-      "${extension}/extension.toml".source = "${pkgs.flow-icons-zed}/share/flow-icons-zed/extension.toml";
-      "zed/extensions/installed/flow-icons".source =
-        "${config.hjem.users.len.xdg.data.directory}/${extension}";
-    };
 
   systemd.user.services.flow-icons = {
     description = "Install the latest Flow Icons for Zed";
@@ -96,10 +99,8 @@
   };
 
   environment.systemPackages = with pkgs; [
-    ghostty
     google-chrome
     chatgpt
-    zed-editor
     gearlever
     proton-pass-cli
     discord

@@ -8,7 +8,7 @@
 {
   imports = [
     ./sops.nix
-    inputs.hjem.nixosModules.default
+    inputs.home-manager.nixosModules.home-manager
   ];
 
   nix = {
@@ -78,7 +78,15 @@
     ];
   };
 
-  hjem.users.len.imports = [ ../home/config.nix ];
+  home-manager = {
+    useGlobalPkgs = true;
+    useUserPackages = true;
+    extraSpecialArgs = { inherit inputs; };
+    # Files placed earlier by hjem would otherwise block activation.
+    backupFileExtension = "hm-backup";
+    overwriteBackup = true;
+    users.len = ../home/home.nix;
+  };
 
   environment.localBinInPath = true;
 
@@ -86,33 +94,23 @@
 
   users.defaultUserShell = pkgs.zsh;
 
-  programs.zsh = {
-    enable = true;
-    autosuggestions.enable = true;
-    syntaxHighlighting.enable = true;
-  };
+  # The login shell; configured for len in home/home.nix.
+  programs.zsh.enable = true;
 
-  programs.zoxide = {
-    enable = true;
-    # Initialised in home/.zshrc as `cd`.
-    enableZshIntegration = false;
-  };
+  # Completions for system packages, for Home Manager's zsh.
+  environment.pathsToLink = [ "/share/zsh" ];
+
   programs.git.enable = true;
 
   environment.systemPackages = with pkgs; [
     git
-    gh
     jujutsu
     zsh
-    starship
-    eza
-    helix
     just
     nixd
     nil
     nixfmt
     sops
-    nix-your-shell
     nodejs
     pnpm
     python3
