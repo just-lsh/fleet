@@ -3,8 +3,8 @@
   imports = [
     inputs.disko.nixosModules.disko
     ./disk.nix
-    ../../modules/common.nix
-    ../../modules/desktop.nix
+    ../../shared/common.nix
+    ../../shared/desktop.nix
   ];
 
   hardware.facter.reportPath = ./facter.json;

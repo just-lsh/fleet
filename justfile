@@ -1,5 +1,5 @@
-mod home
-mod secrets
+mod home 'home/home.just'
+mod secrets 'shared/secrets.just'
 
 [private]
 default:

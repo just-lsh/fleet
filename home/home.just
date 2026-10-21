@@ -1,6 +1,6 @@
 [private]
 default:
-    @just --list
+    @just --list home
 
 skills *args="--help":
     pnpx --yes skills@latest {{ args }}

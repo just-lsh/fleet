@@ -10,7 +10,8 @@ default:
 update:
     #!/usr/bin/env bash
     set -euo pipefail
-    for file in secrets/*.yaml; do
+    shopt -s nullglob
+    for file in shared/secrets.yaml hosts/*/secrets.yaml; do
         sops updatekeys --yes "$file"
     done
 
@@ -26,7 +27,7 @@ host:
     fi
     sudo "$age/bin/age-keygen" -y {{ age_keyfile }}
 
-# Add a host's public key as a recipient and re-encrypt every secret.
+# Add a host's key to the shared secrets and its own secrets file, then re-encrypt every secret.
 add name key:
     #!/usr/bin/env bash
     set -euo pipefail
@@ -40,8 +41,11 @@ add name key:
     fi
     NAME='{{ name }}' KEY='{{ key }}' nix run nixpkgs#yq-go -- -i '
       .keys += [strenv(KEY)] | .keys[-1] anchor = strenv(NAME) |
-      (.creation_rules[].key_groups[].age) += [""] |
-      (.creation_rules[].key_groups[].age[-1]) alias = strenv(NAME)
+      (.creation_rules[] | select(.path_regex == "^shared/secrets\\.yaml$") | .key_groups[].age) += [""] |
+      (.creation_rules[] | select(.path_regex == "^shared/secrets\\.yaml$") | .key_groups[].age[-1]) alias = strenv(NAME) |
+      .creation_rules += [{"path_regex": "^hosts/" + strenv(NAME) + "/secrets\\.yaml$", "key_groups": [{"age": ["", ""]}]}] |
+      .creation_rules[-1].key_groups[0].age[0] alias = "main" |
+      .creation_rules[-1].key_groups[0].age[1] alias = strenv(NAME)
     ' .sops.yaml
     just secrets update
 

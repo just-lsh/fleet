@@ -3,7 +3,7 @@
   imports = [ inputs.sops-nix.nixosModules.sops ];
 
   sops = {
-    defaultSopsFile = ../secrets/common.yaml;
+    defaultSopsFile = ./secrets.yaml;
     age.keyFile = "/var/lib/sops-nix/key.txt";
 
     # Decrypted before users are created, so it can back the login password.

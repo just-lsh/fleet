@@ -64,7 +64,7 @@
   };
 
   # The Flow Icons extension without its icons, which the flow-icons service in
-  # modules/desktop.nix fills in. Zed treats a linked extension as a dev
+  # shared/desktop.nix fills in. Zed treats a linked extension as a dev
   # extension and never replaces it with a registry update.
   xdg.dataFile = {
     "flow-icons/extension/extension.toml".source =
