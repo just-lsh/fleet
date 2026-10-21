@@ -7,11 +7,15 @@
 }:
 let
   # Links each entry of a directory, so the directory itself stays writable.
+  # Forced, since directories can't be backed up and hjem left links here.
   linkEach =
     source: target:
     lib.mapAttrs' (name: _: {
       name = "${target}/${name}";
-      value.source = source + "/${name}";
+      value = {
+        source = source + "/${name}";
+        force = true;
+      };
     }) (builtins.readDir source);
 in
 {
