@@ -17,6 +17,8 @@
   };
 
   fonts.packages = with pkgs; [
+    # The shell font; installed system-wide so the greeter can use it too.
+    inter
     nerd-fonts.jetbrains-mono
     noto-fonts-color-emoji
   ];

@@ -44,7 +44,8 @@
     # here. This allows exactly that helper, so it doesn't prompt every time.
     passwordless-sync-users = [ "len" ];
 
-    # Appearance is left to sync, since this file wins over synced values.
+    # Palette, wallpaper and font are left to sync, since this file wins over
+    # synced values. The rest mirrors the minimal lock screen.
     settings = {
       session.default = "Umbriel";
       user.default = "len";
@@ -53,6 +54,19 @@
         size = 24;
         path = "${pkgs.adwaita-icon-theme}/share/icons";
       };
+      appearance = {
+        hide_logo = true;
+        power_buttons_position = "hidden";
+        scheme_selector_position = "hidden";
+      };
+      clock = {
+        position = "above-panel";
+        time_format = "{:%H:%M}";
+        date_format = "%A, %d. %B";
+      };
+      # The ultrawide's fastest mode, as in Umbriel's config; the greeter
+      # otherwise takes the EDID-preferred 60 Hz. Other displays are unaffected.
+      output.refresh_rate = "GIGA-BYTE TECHNOLOGY CO., LTD. M34WQ 0x0000037A:144";
     };
   };
 
