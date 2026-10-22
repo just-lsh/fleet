@@ -45,7 +45,6 @@
               "applications:google-chrome.desktop"
               "applications:com.mitchellh.ghostty.desktop"
               "applications:dev.zed.Zed.desktop"
-              "applications:t3_code_nightly.desktop"
               "applications:raddbg.desktop"
             ];
           }

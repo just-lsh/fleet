@@ -52,5 +52,17 @@ install host target:
         --extra-files "$extra" \
         {{ target }}
 
+# Boot the playground VM from the working tree, decrypting secrets with this host's key. Its disk persists in ~/.local/state/fleet/playground.
+vm:
+    #!/usr/bin/env bash
+    set -euo pipefail
+    vm=$(nix build --no-link --print-out-paths .#nixosConfigurations.playground.config.system.build.vm)
+    mkdir -p "${XDG_STATE_HOME:-$HOME/.local/state}/fleet/playground"
+    keydir="${XDG_RUNTIME_DIR:?}/fleet/playground"
+    install -d -m 700 "$keydir"
+    trap 'rm -rf "$keydir"' EXIT
+    (umask 077 && sudo cat /var/lib/sops-nix/key.txt > "$keydir/key.txt")
+    "$vm/bin/run-playground-vm"
+
 clean:
     nh clean all --keep 5 --keep-since 30d
