@@ -9,6 +9,7 @@
     ./helix.nix
     ./ghostty.nix
     ./zed.nix
+    ./cursor.nix
     ./agents.nix
   ];
 
