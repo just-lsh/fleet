@@ -29,19 +29,6 @@
     };
   };
 
-  programs.eza = {
-    enable = true;
-    icons = "auto";
-    colors = "auto";
-    extraOptions = [
-      "--hyperlink=auto"
-      "--classify=auto"
-      "--sort=type"
-      "--group-directories-first"
-      "--oneline"
-    ];
-  };
-
   programs.starship.enable = true;
 
   programs.zoxide = {
