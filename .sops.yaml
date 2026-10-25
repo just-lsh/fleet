@@ -2,6 +2,7 @@ keys:
   - &main age1kjw3mqhn3x56wr42htfk48xrprl36rju3ky4y5f98y4fwr0fcgvsx7v9g4
   - &workstation age1vek05hfezq356ktjz38edhxrn39nyz6739gquly0x0wxntkmg5csz29zz4
   - &laptop age18xjr4gtzgkxggnvvthzxg7hh827vh75rskd5mgjgvau98y9x7c8qk6wl83
+  - &devbox age1s3zxs4p432w2mxcgk585d2xyxrhwy42u0lwrh46f8a78dh296qase5y45m
 creation_rules:
   - path_regex: ^shared/secrets\.yaml$
     key_groups:
@@ -9,6 +10,7 @@ creation_rules:
           - *main
           - *workstation
           - *laptop
+          - *devbox
   - path_regex: ^hosts/workstation/secrets\.yaml$
     key_groups:
       - age:
@@ -19,3 +21,8 @@ creation_rules:
       - age:
           - *main
           - *laptop
+  - path_regex: ^hosts/devbox/secrets\.yaml$
+    key_groups:
+      - age:
+          - *main
+          - *devbox

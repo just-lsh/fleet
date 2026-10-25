@@ -8,6 +8,9 @@ let
 
   hostDir = hostsDir + "/${config.networking.hostName}";
   hasKeys = builtins.pathExists (hostDir + "/secrets.yaml");
+
+  # Hosts whose len may not log in anywhere; the others may still log in to them.
+  outboundDenied = [ "devbox" ];
 in
 {
   services.openssh = {
@@ -30,10 +33,10 @@ in
     };
   };
 
-  # Each host's len may log in to every host.
+  # Each host's len may log in to every host, unless outbound-denied.
   users.users.len.openssh.authorizedKeys.keys = map (
     host: lib.fileContents (hostsDir + "/${host}/id_ed25519.pub")
-  ) (withFile "id_ed25519.pub");
+  ) (lib.subtractLists outboundDenied (withFile "id_ed25519.pub"));
 
   # Hosts recognise each other by name without a trust-on-first-use prompt.
   programs.ssh.knownHosts = lib.genAttrs (withFile "ssh_host_ed25519_key.pub") (host: {
