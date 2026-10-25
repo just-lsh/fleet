@@ -8,6 +8,7 @@
 {
   imports = [
     (modulesPath + "/profiles/qemu-guest.nix")
+    inputs.comin.nixosModules.comin
     inputs.disko.nixosModules.disko
     ./disk.nix
     ../../shared/common.nix
@@ -170,6 +171,19 @@
     xdotool
     scrot
   ];
+
+  # Pulls main from GitHub and switches to it.
+  services.comin = {
+    enable = true;
+    # nixpkgs builds the last release, which lags the module from comin's main.
+    package = inputs.comin.packages.${pkgs.stdenv.hostPlatform.system}.comin;
+    remotes = [
+      {
+        name = "origin";
+        url = "https://github.com/just-lsh/fleet.git";
+      }
+    ];
+  };
 
   networking.hostName = "devbox";
 
