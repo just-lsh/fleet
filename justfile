@@ -25,7 +25,7 @@ update output=`uname -n`:
 
 # Build a host's configuration here and switch it over SSH.
 deploy host target=("len@" + host):
-    nh os switch {{ justfile_dir() }} -H {{ host }} --target-host {{ target }}
+    nh os switch {{ justfile_dir() }} -H {{ host }} --build-host {{ target }} --target-host {{ target }}
 
 # Install a host over SSH with nixos-anywhere, passing args on to it. Wipes the target's disk.
 install host target *args:

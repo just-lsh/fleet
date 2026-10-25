@@ -54,7 +54,12 @@
     MemoryMax = "3.4G";
   };
 
-  users.users.len.linger = true;
+  users.users.len = {
+    linger = true;
+    openssh.authorizedKeys.keys = [
+      "ssh-ed25519 AAAAC3NzaC1lZDI1NTE5AAAAICBFzAYYUHt43xAQurGUHSLVOCiwlug8JxeFnsaTyMA1"
+    ];
+  };
 
   home-manager.users.len = {
     systemd.user.tmpfiles.rules = [
