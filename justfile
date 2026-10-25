@@ -27,8 +27,8 @@ update output=`uname -n`:
 deploy host target=("len@" + host):
     nh os switch {{ justfile_dir() }} -H {{ host }} --target-host {{ target }}
 
-# Install a host over SSH with nixos-anywhere. Wipes the target's disk.
-install host target:
+# Install a host over SSH with nixos-anywhere, passing args on to it. Wipes the target's disk.
+install host target *args:
     #!/usr/bin/env bash
     set -euo pipefail
     extra=$(mktemp -d)
@@ -50,7 +50,7 @@ install host target:
         --flake .#{{ host }} \
         --generate-hardware-config nixos-facter hosts/{{ host }}/facter.json \
         --extra-files "$extra" \
-        {{ target }}
+        {{ args }} {{ target }}
 
 # Boot the playground VM from the working tree, decrypting secrets with this host's key. Its disk persists in ~/.local/state/fleet/playground.
 vm:

@@ -56,6 +56,11 @@
         modules = [ ./hosts/laptop/config.nix ];
       };
 
+      nixosConfigurations.devbox = nixpkgs.lib.nixosSystem {
+        specialArgs = { inherit inputs outputs; };
+        modules = [ ./hosts/devbox/config.nix ];
+      };
+
       nixosConfigurations.playground = nixpkgs.lib.nixosSystem {
         specialArgs = { inherit inputs outputs; };
         modules = [ ./hosts/playground/config.nix ];

@@ -8,7 +8,7 @@ Place every change by its _scope_: the narrowest layer that covers every machine
 
 - `hosts/<host>/` holds what only that machine gets: hardware, disk layout, boot, and per-host overrides. A host-only Home Manager setting goes here too, under `home-manager.users.<user>`.
 - `shared/` holds NixOS modules that hosts import, plus the secrets every host reads.
-- `home/` holds the Home Manager configuration every host gives the user.
+- `home/` holds the Home Manager configuration every host gives the user. `home/desktop.nix` holds the part only desktop hosts get; `shared/desktop.nix` imports it.
 - `pkgs/` holds packages built here; the overlay in `overlays/` puts them into `pkgs`.
 - `assets/` holds files referenced from the configuration, such as images.
 
