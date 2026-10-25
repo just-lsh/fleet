@@ -45,7 +45,30 @@
     config.allowUnfree = true;
   };
 
-  programs.nix-ld.enable = true;
+  programs.nix-ld = {
+    enable = true;
+    # T3 Code downloads a Chrome headless shell for its preview browser that
+    # links against these. https://github.com/pingdotgg/t3code/issues/16871
+    libraries = with pkgs; [
+      alsa-lib
+      at-spi2-core
+      dbus
+      expat
+      glib
+      libgbm
+      libx11
+      libxcb
+      libxcomposite
+      libxdamage
+      libxext
+      libxfixes
+      libxkbcommon
+      libxrandr
+      nspr
+      nss
+      systemd
+    ];
+  };
 
   time.timeZone = "Europe/Berlin";
 
