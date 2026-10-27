@@ -179,7 +179,20 @@
   # Serves the Claude and Codex subscriptions to every host's agents (shared/cliproxyapi.nix).
   services.cliproxyapi = {
     enable = true;
-    settings.access.api-keys = [ { _secret = config.sops.secrets.cliproxyapi-api-key.path; } ];
+    settings = {
+      access.api-keys = [ { _secret = config.sops.secrets.cliproxyapi-api-key.path; } ];
+      # The web panel at /management.html logs in with this key, from any host on the tailnet.
+      management = {
+        secret-key._secret = config.sops.secrets.cliproxyapi-management-key.path;
+        allow-remote = true;
+      };
+    };
+  };
+
+  # Readable by len, who logs in to the panel with it.
+  sops.secrets.cliproxyapi-management-key = {
+    sopsFile = ./secrets.yaml;
+    owner = "len";
   };
 
   # The proxy binds every interface but is reachable over the tailnet only.
