@@ -92,9 +92,9 @@
     firewall.enable = true;
   };
 
-  # Leaves addresses in place when dhcpcd stops, so dropping it next doesn't
-  # take away the addresses NetworkManager shares with it.
-  networking.dhcpcd.persistent = true;
+  # facter turns on dhcpcd for every interface it detected, which then fights
+  # NetworkManager over the same interfaces and crashes when it's restarted.
+  hardware.facter.detected.dhcp.enable = false;
 
   services.tailscale = {
     enable = true;
