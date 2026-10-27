@@ -92,6 +92,10 @@
     firewall.enable = true;
   };
 
+  # Leaves addresses in place when dhcpcd stops, so dropping it next doesn't
+  # take away the addresses NetworkManager shares with it.
+  networking.dhcpcd.persistent = true;
+
   services.tailscale = {
     enable = true;
     openFirewall = true;
