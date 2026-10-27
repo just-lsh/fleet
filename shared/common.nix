@@ -9,6 +9,7 @@
   imports = [
     ./sops.nix
     ./ssh.nix
+    ./cliproxyapi.nix
     inputs.home-manager.nixosModules.home-manager
   ];
 

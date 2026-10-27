@@ -1,4 +1,5 @@
 {
+  config,
   inputs,
   lib,
   modulesPath,
@@ -170,6 +171,20 @@
   environment.systemPackages = with pkgs; [
     xdotool
     scrot
+    # Provider logins run as the service user:
+    # sudo -u cliproxyapi cliproxyapi -config /var/lib/cliproxyapi/config.yaml -no-browser --claude-login
+    config.services.cliproxyapi.package
+  ];
+
+  # Serves the Claude and Codex subscriptions to every host's agents (shared/cliproxyapi.nix).
+  services.cliproxyapi = {
+    enable = true;
+    settings.access.api-keys = [ { _secret = config.sops.secrets.cliproxyapi-api-key.path; } ];
+  };
+
+  # The proxy binds every interface but is reachable over the tailnet only.
+  networking.firewall.interfaces.tailscale0.allowedTCPPorts = [
+    config.services.cliproxyapi.settings.server.port
   ];
 
   # Pulls main from GitHub and switches to it.

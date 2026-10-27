@@ -18,7 +18,6 @@
     elisa
     khelpcenter
     krdp
-    kwin-x11
     plasma-keyboard
     qtvirtualkeyboard
     plasma-browser-integration
