@@ -5,6 +5,7 @@ in
 {
   imports = [
     inputs.disko.nixosModules.disko
+    inputs.nixos-hardware.nixosModules.framework-13-7040-amd
     ./disk.nix
     ../../shared/common.nix
     ../../shared/desktop.nix
