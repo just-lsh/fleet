@@ -12,6 +12,7 @@
     inputs.comin.nixosModules.comin
     inputs.disko.nixosModules.disko
     ./disk.nix
+    ./openbot.nix
     ../../shared/common.nix
   ];
 
