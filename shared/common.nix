@@ -10,6 +10,7 @@
     ./sops.nix
     ./ssh.nix
     ./cliproxyapi.nix
+    ./containers.nix
     inputs.home-manager.nixosModules.home-manager
   ];
 
