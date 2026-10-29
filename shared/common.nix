@@ -29,6 +29,11 @@
     };
   };
 
+  boot.binfmt = {
+    emulatedSystems = [ "aarch64-linux" ];
+    preferStaticEmulators = true;
+  };
+
   programs.nh = {
     enable = true;
     flake = "/home/len/fleet";
