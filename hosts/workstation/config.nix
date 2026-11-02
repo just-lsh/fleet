@@ -1,6 +1,9 @@
 { inputs, pkgs, ... }:
 let
-  wallpaper = ../../assets/wallpaper/dark/3440x1440.png;
+  # Interpolate so the image is copied into the store and kept alive by the
+  # generation; a bare path gets toString-ed by plasma-manager without a
+  # store reference, and the image disappears on the next garbage collection.
+  wallpaper = "${../../assets/wallpaper/dark/3440x1440.png}";
 in
 {
   imports = [
