@@ -187,6 +187,19 @@
         secret-key._secret = config.sops.secrets.cliproxyapi-management-key.path;
         allow-remote = true;
       };
+      routing = {
+        strategy = "round-robin";
+        # Prompt caches are per account; keep each session on the account it started on.
+        session-affinity = true;
+        session-affinity-ttl = "1h";
+        retry = {
+          request-retry = 3;
+          max-retry-interval = 30;
+        };
+      };
+      # Claude subs are for Claude Code only. Don't disguise other clients as Claude Code;
+      # real Claude Code requests pass through unchanged either way.
+      upstream.claude.disable-claude-cloak-mode = true;
     };
   };
 

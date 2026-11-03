@@ -20,6 +20,7 @@ in
         name = "CLIProxyAPI";
         base_url = "${url}/v1";
         wire_api = "responses";
+        supports_websockets = true;
         auth = {
           command = "cat";
           args = [ apiKey ];
