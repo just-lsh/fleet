@@ -46,6 +46,11 @@ in
 
   hardware.graphics.enable = true;
 
+  # World of Warcraft runs through Battle.net under GE-Proton in Steam
+  programs.steam.extraCompatPackages = [ pkgs.proton-ge-bin ];
+  programs.gamemode.enable = true;
+  environment.systemPackages = [ pkgs.mangohud ];
+
   hardware.nvidia = {
     prime = {
       sync.enable = false;
