@@ -11,6 +11,7 @@ Place every change by its _scope_: the narrowest layer that covers every machine
 - `home/` holds the Home Manager configuration every host gives the user. `home/desktop.nix` holds the part only desktop hosts get; `shared/desktop.nix` imports it.
 - `pkgs/` holds packages built here; the overlay in `overlays/` puts them into `pkgs`.
 - `assets/` holds files referenced from the configuration, such as images.
+- `.agents/skills/` holds skills for working on this repo; `.claude/skills/` links to them.
 
 Plasma settings belong in Nix: plasma-manager owns the Plasma config and resets whatever was changed in the GUI.
 
