@@ -9,7 +9,7 @@
 # Stop the container and copy the data folder before each bump.
 { pkgs, ... }:
 let
-  version = "0.52.1";
+  version = "0.60.0";
 
   # Upstream's Docker profile plus clone and unshare, so the Electron sandbox can make user namespaces.
   seccomp = pkgs.fetchurl {
@@ -26,7 +26,7 @@ in
   virtualisation.oci-containers = {
     backend = "podman";
     containers.openbot = {
-      image = "ghcr.io/nightly-labs/openbot:${version}@sha256:6969bc4e3a4d3c6e23425d011a6cb8a9e9a15b19e7c60e11c89d0d661e6f0d1d";
+      image = "ghcr.io/nightly-labs/openbot:${version}@sha256:4d5f120495fa67e0cf5fbc537dc11b7708563a06317e75448a950387f7b390f7";
       # The database, workspaces, provider sign-ins and the keyring with its password, kept together.
       volumes = [ "${dataDir}:/data" ];
       extraOptions = [
