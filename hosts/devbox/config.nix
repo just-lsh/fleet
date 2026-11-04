@@ -217,8 +217,6 @@
   # Pulls main from GitHub and switches to it.
   services.comin = {
     enable = true;
-    # nixpkgs builds the last release, which lags the module from comin's main.
-    package = inputs.comin.packages.${pkgs.stdenv.hostPlatform.system}.comin;
     remotes = [
       {
         name = "origin";
